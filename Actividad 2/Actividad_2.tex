@@ -1,0 +1,190 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage[usenames]{color}
+\usepackage{hyperref}
+
+
+\begin{document}
+\begin{doublespace}
+\title{\includegraphics[scale=0.40]{escudo-gde-trans.png}\\ \textsc{\LARGE Iniciando con el editor GNU Emacs\\Universidad de Sonora\\Física Computacional 1}}
+\author{\huge Campos Quiñonez Jorge Andres}
+\date{\Large 29 de Enero de 2017}
+\maketitle
+
+\end{doublespace}
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+\newpage
+
+\section{\huge Introducción}
+\Large En esta actividad realizaremos una especie de continuación a la investigación de atmosferas, en lugar de definiciones, trabajaremos con la plataforma de la Universidad de Wyoming, conseguiremos datos que fueron obtenidos de sondeos en determinados lugares que se nos fueron asignados. Utilizaremos esos datos para realizar una limpieza de ellos, aprender como encontrar el número de líneas que poseen determinada palabra para poder realizar conteos y localizarlas con mayor facilidad sin necesidad de manualmente obsevar todos los datos cuando se tratan de una enorme cantidad de ellos. Después de eso realizaremos otras actividades pedidas, como la realización de gráficas en GNU plot y tablas.
+
+\newpage
+\section{\huge Desarrollo}
+\subsection{\LARGE Obtención de datos meteorológicos}
+Para comenzar con la actividad, observamos una lista de lugares en México y la parte sur de los Estados Unidos donde realizan sondeos meteorologicos prácticamente a diario para comprobar las condiciones en las que la atmosfera se encuentra.
+Para la obtención de esos datos se utilizan globos meteorologicos que son lanzados a dos posibles horas; las 00 o las 12 GMT. Estos tienden a alcanzar los 30,000m de altura, cada determinado tiempo va tomando muestras de datos como temperatura, presión atmosférica.\\
+
+Nuestro metodo de obtención de estos datos fue através del portal de la  \href{http://weather.uwyo.edu/upperair/sounding.html}{\textcolor{blue}{Universidad de Wyoming}}. La primera serie de datos que bajamos fue del 1ro de Febrero del 2017, en mi caso se trata de la zona de sondeo "Colonia JuanCarrasco". 
+De esta misma tabla de datos se nos pidio la obtención de 2 tablas.
+\newpage
+\begin{enumerate}
+\item \huge Presión en función de altitud.\\
+\includegraphics[scale=0.50]{Presion_en_funcion_de_altitud.png}\\
+\Large Como se puede observar, la presión va disminuyendo de manera exponencial conforme aumenta la altura.\\
+\hfill \\
+
+
+
+
+\item \huge  Temperatura en función de altitud.\\
+\includegraphics[scale=0.50]{Temperatura_en_funcion_de_altitud.png}\\
+\Large Aquí vemos como la temperatura va descendiendo hasta cierto punto y comienza a elevarse de nuevo tan solo un poco.  
+\end{enumerate}
+
+
+\newpage
+\subsection{\huge Obtención de datos con EMACS} \bigskip
+Ahora, obtendremos la información atmosferica de la Colonia JuanCarrasco de todo el año anterior. Esto nos será posible con la ayuda de un archivo ejecutable que crearemos con la ayuda del editor de texto EMACS y el siguiente script:
+\large
+\begin{verbatim}
+
+# Descarga por mes. Cambiar año de consulta.
+Ajustar el numero de estacion.
+
+#!/bin/bash
+
+# Despues de editar: chmod 755 script1.sh
+
+# Para ejecutar: ./script1.sh
+
+IFS=":"
+
+LISTM31="01:03:05:07:08:10:12"
+
+#LISTM31="01:03:05:07"
+
+LISTM30="04:06:09:11"
+
+#LISTM30="04:06"
+
+LISTM28="02"
+
+ 
+
+# Script para bajar info por mes. Año 2016, dentro del 
+URL:  YEAR=2016
+
+# Months 31 days
+
+for i in $LISTM31 ; do
+
+/usr/local/bin/wget "http://weather.uwyo.edu/cgi-bin/sounding?
+region=naconf&TYPE=TEXT%3ALIST&YEAR=2016&MONTH=$i&FROM=0100&TO
+=3112&STNM=76458"
+
+       /bin/sleep 5
+
+done
+
+# Months 30 days
+
+for i in $LISTM30 ; do
+
+    /usr/local/bin/wget "http://weather.uwyo.edu/cgi-bin/sounding?
+region=naconf&TYPE=TEXT%3ALIST&YEAR=2016&MONTH=$i&FROM=0100&TO=
+3012&STNM=76458"
+
+       /bin/sleep 5
+
+done
+
+# Feb. 28 days
+
+for i in $LISTM28 ; do
+
+    /usr/local/bin/wget "http://weather.uwyo.edu/cgi-bin/sounding?
+region=naconf&TYPE=TEXT%3ALIST&YEAR=2016&MONTH=$i&FROM=0100&TO=
+2812&STNM=76458"
+
+       /bin/sleep 5
+
+done
+\end{verbatim} \bigskip
+Con este script guardamos un archivo llamado "Script1.sh". Ahora utilizamos este archivo ejecutable para comenzar a descargar toda la información del año 2016 en distintos archivos por mes y cada uno de esos archivos contenia los datos de todos los días del mes incluidos en ellos. Para realizar el conteo se utilizaron los siguientes comandos en la terminal.
+\\
+\begin{verbatim}
+grep Observations sondeos.txt | grep Jan | grep 12Z | wc
+grep Observations sondeos.txt | grep Jan | grep 00Z | wc
+grep Observations sondeos.txt | grep Feb | grep 00Z | wc
+grep Observations sondeos.txt | grep Feb | grep 12Z | wc
+grep Observations sondeos.txt | grep Mar | grep 12Z | wc
+grep Observations sondeos.txt | grep Mar | grep 00Z | wc
+grep Observations sondeos.txt | grep Apr | grep 00Z | wc
+grep Observations sondeos.txt | grep Apr | grep 12Z | wc
+grep Observations sondeos.txt | grep May | grep 12Z | wc
+grep Observations sondeos.txt | grep May | grep 00Z | wc
+grep Observations sondeos.txt | grep Jun | grep 00Z | wc
+grep Observations sondeos.txt | grep Jun | grep 12Z | wc
+grep Observations sondeos.txt | grep Jul | grep 12Z | wc
+grep Observations sondeos.txt | grep Jul | grep 00Z | wc
+grep Observations sondeos.txt | grep Aug | grep 00Z | wc
+grep Observations sondeos.txt | grep Aug | grep 12Z | wc
+grep Observations sondeos.txt | grep Sep | grep 12Z | wc
+grep Observations sondeos.txt | grep Sep | grep 00Z | wc
+grep Observations sondeos.txt | grep Oct | grep 00Z | wc
+grep Observations sondeos.txt | grep Oct | grep 12Z | wc
+grep Observations sondeos.txt | grep Nov | grep 12Z | wc
+grep Observations sondeos.txt | grep Nov | grep 00Z | wc
+grep Observations sondeos.txt | grep Dic | grep 12Z | wc
+grep Observations sondeos.txt | grep Dec | grep 12Z | wc
+grep Observations sondeos.txt | grep Dec | grep 00Z | wc
+\end{verbatim}
+Estos comandos varian para cada mes y hora en la que se registró las
+condiciones de la atmosfera como se mostró en los comandos anteriores.
+Toda la información fue extraida de la fusión de todos los archivos 
+que se descargaron con el script1.sh.
+
+
+\newpage
+Con todos los datos ya recolectados, se recopilaron en la siguiente tabla:\\
+\begin{center}
+\begin{tabular}{ | l | l | l | }
+\hline
+
+	Mes & Hora (GMT) & Días registrados \\ \hline
+	Enero & 00Z & 0 \\ \hline
+	 & 12Z & 31 \\ \hline
+	Febrero & 00Z & 0 \\ \hline
+	 & 12Z & 28 \\ \hline
+	Marzo & 00Z & 0 \\ \hline
+	 & 12Z & 25 \\ \hline
+	Abril & 00Z & 0 \\ \hline
+	 & 12Z & 30 \\ \hline
+	Mayo & 00Z & 0 \\ \hline
+	 & 12Z & 31 \\ \hline
+	Junio & 00Z & 0 \\ \hline
+	 & 12Z & 30 \\ \hline
+	Julio & 00Z & 0 \\ \hline
+	 & 12Z & 31 \\ \hline
+	Agosto & 00Z & 0 \\ \hline
+	 & 12Z & 30 \\ \hline
+	Septiembre & 00Z & 11 \\ \hline
+	 & 12Z & 30 \\ \hline
+	Octubre & 00Z & 31 \\ \hline
+	 & 12Z & 29 \\ \hline
+	Noviembre & 00Z & 29 \\ \hline
+	 & 12Z & 29 \\ \hline
+	Diciembre & 00Z & 29 \\ \hline
+	 & 12Z & 31 \\ \hline
+\end{tabular}
+\end{center}
+
+
+
+\end{document}

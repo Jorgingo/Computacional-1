@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage[usenames]{color}
+\usepackage{hyperref}
+
+
+\begin{document}
+\begin{doublespace}
+\title{\includegraphics[scale=0.40]{escudo-gde-trans.png}\\ \textsc{\LARGE Universidad de Sonora\\Física Computacional 1\\Iniciándose en Python}}
+\author{\huge Campos Quiñonez Jorge Andres}
+\date{\Large 29 de Enero de 2017}
+\maketitle
+
+\end{doublespace}
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\newpage
+\section{\huge Introducción}
+\large En esta actividad, realizaremos una exploración e interpretación de los datos que hemos obtenido gracias a actividades anteriores de datos meteorologicos recopilados por la Universidad de Wyoming de distintos lugares de norte america. En esta ocasión, al igual que en las anteriores, nos enfocaremos e interpretaremos los datos obtenidos de las observaciones realizadas en la Colonia JuanCarrasco. Utlizando una terminal y los archivos de datos anteriormente obtenidos, se limpiaran y se utilizarán en Jupyter Notebook con Python para realizar interpretaciones de los mismos.
+
+\newpage
+\section{\huge Desarrollo}
+\subsection{\LARGE Preparación de los datos}
+\bigskip
+Utilizando los datos obtenidos en la actividad anterior acerca de las condiciones meteorologicas de la atmosfera, en determinado sitio de observación, realizaremos una limpieza de estos mismos y buscar obtener datos especificos de cada día en todo el año.\\
+
+Con determinados comandos en bash, se unieron todos los archivos .HTML descargados en un solo archivo .txt con el nombre de sondeos.txt. Con ayuda de la terminal y utilzando comandos para filtrar ciertas variables, separamos la información en 2 archivos; uno para todos los días que tuvieran sondeo a las 00Z horas y otro a las 12Z horas. Cada archivo debe poseer lo siguiente: Fecha, datos de CAPE y datos para Precipitable Water. Para realizar esto, se utilizó el siguiente comando en la terminal:\\
+\begin{verbatim}
+cat sondeos.txt | egrep -i "Observations| CAPE | precipitable" 
+| sed -e "/12Z/,+2d" > 00Zanual.txt
+\end{verbatim}
+\bigskip
+Para todos los días en que se hicieron sondeos a las 00Z (GMT), y\\
+\begin{verbatim}
+cat sondeos.txt | egrep -i "Observations| CAPE | precipitable" 
+| sed -e "/00Z/,+2d" > 12Zanual.txt
+\end{verbatim}
+\bigskip
+Para todos los días en que se hicieron sondeos a las 12Z (GMT).\\ Con estos datos, podemos comenzar a utilizar Jupyter Notebook, para realizar una interpretación de estos datos.
+\newpage
+
+
+\subsection{\huge Jupyter Notebook}
+\bigskip
+Ahora, se inició con la terminal lo que es "Jupyter Notebook". Esta abre una página en un navegador y damos inicio a un archivo nuevo. Para comenzar, necesitamos indicar las bibliotecas a utilizar. En este caso utilizaremos panda y para ello colocamos los siguientes comandos en distintas lineas cada uno para ejecutarlos presionando \textbf{SHIFT+ENTER}.
+\begin{verbatim}
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+\end{verbatim}
+\bigskip
+Y realizamos una lectura del archivo creado con Emacs anteriormente al cual le hicimos limpieza con el siguiente comando:
+\begin{verbatim}
+df = pd.read_csv("/home/elmadafaka/Física_computacional/Actividad 3/
+12ZAnual.csv", names=['Fecha','CAPE', 'PW'])
+\end{verbatim}
+\bigskip
+Con los datos ya leidos, procedimos a realizar 2 tablas. Una contiene los 10 primeros datos del archivo con sus respectivas variables y en la segunda se observan datos estadísticos acerca de todos los datos. Los comandos utilizados fueron los siguientes:
+\begin{verbatim}
+df.head(10)
+df.describe()
+df.apply(lambda x: sum(x.isnull()),axis=0)
+\end{verbatim}
+\includegraphics[scale=0.5]{Tabla_1.png}
+\includegraphics[scale=0.5]{Tabla_2.png}
+\newpage
+
+
+\subsection{\huge Análisis de la variable CAPE}
+\bigskip
+Para iniciar los análisis estadísticos de la variable, utilizaremos Jupyter Notebook con Python para hacer un histograma, y dos diagramas de caja; uno para todo el conjunto de datos y el segundo será una comparativa de los datos organizados por mes.
+\bigskip
+\begin{verbatim}
+df.columns 
+matplotlib inline
+df.hist(u'CAPE',bins=20)
+\end{verbatim}
+\bigskip
+Son los comandos utilizados para generar el siguiente histograma de la variable CAPE.\\
+\begin{center}
+\includegraphics[scale=0.75]{Hist_CAPE.png}
+\end{center}
+\bigskip
+Para generar un diagrama de caja, utilizaremos el siguiente comando:
+\begin{verbatim}
+df.boxplot(column=u'CAPE')
+\end{verbatim}
+\bigskip
+Y se forma el siguiente diagrama:\\
+\begin{center}
+\includegraphics[scale=0.75]{Caja_CAPE.png}
+\end{center}
+\bigskip
+Ahora, para realizar una comparativa con mes, utilizaremos los siguientes comandos para realizar un diagrama de caja por mes de todos los datos.
+\begin{verbatim}
+df['month']=pd.DatetimeIndex(df[u'Fecha']).month
+df.boxplot(column=u'CAPE',by=u'month')
+\end{verbatim}
+\bigskip
+Y con ello, se formó el siguiente gráfico\\
+\begin{center}
+\includegraphics[scale=0.75]{Caja_mes_CAPE.png}
+\end{center}
+\newpage
+
+
+\subsection{\huge Análisis de datos de Precipitable Water}
+\bigskip
+Ahora, realizaremos los mismos procedimientos para obtener gráficas para poder observar como se ha comportado durante todo el año en el sitio JuanCarrasco. Comenzando con el histograma obtenido con el siguiente comando\\
+\begin{verbatim}
+df.hist(u'PW',bins=20)
+\end{verbatim}
+\bigskip
+\begin{center}
+\includegraphics[scale=0.75]{Hist_PW.png}
+\end{center}
+\bigskip
+Procedemos a la observación de un diagrama de caja de todo el año\\
+\begin{center}
+\includegraphics[scale=0.75]{Caja_PW.png}
+\end{center}
+\bigskip
+Y para finalizar, la comparativa de todos los meses utilizando diagramas de caja\\
+\begin{center}
+\includegraphics[scale=0.75]{Caja_mes_PW.png}
+\end{center}
+\newpage
+
+\section{\huge Conclusión}
+Esta actividad resultó bastante entretenida, se que la limpieza de datos automatizada nos será de mucha utilidad debido a que constantemente trabajaremos con una innumerable cantidad de datos. La utilización de Python para realizar gráficos que nos permitan una interpretación de datos mucho más facilitada será de mucha utilidad también.
+
+
+
+\end{document}

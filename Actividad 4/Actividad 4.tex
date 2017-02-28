@@ -1,0 +1,178 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage[usenames]{color}
+\usepackage{hyperref}
+
+
+\begin{document}
+\begin{doublespace}
+\title{\includegraphics[scale=0.40]{escudo-gde-trans.png}\\ \textsc{\LARGE Universidad de Sonora\\Física Computacional 1\\Visualizando datos en Pandas y Matplotlib}}
+\author{\huge Campos Quiñonez Jorge Andres}
+\date{\Large 15 de Febrero de 2017}
+\maketitle
+
+\end{doublespace}
+
+\newpage
+\mbox{}
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\newpage
+\section{\huge Introducción}
+\large En esta actividad utilizaremos nuevamente jupyter notebook, con los módulos de Matplot y Tephi para gráficar los datos obtenidos de un día en especifico de un sondeo realizado por la Universidad de Wyoming y compararla con el tefigrama que la misma plataforma de la universidad no provee para la observación de todos esos datos obtenidos en un día.
+\newpage
+\section{\huge Desarrollo}
+Para iniciar la actividad, comenzaremos por la selección del día 15 de febrero de 2017, en la plataforma de la Universidad de Wyoming obtuvimos todos los datos obtenidos en ese día, ya que esos son los que utilizaremos en esta actividad para realizar las gráficas e interpretar los datos que hemos obtenido.\\
+Para iniciar en jupyter notebook se establecieron los siguientes comandos para distintos motivos, como la lectura del archivo y los módulos que se utilizarán para gráficar.
+\begin{verbatim}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as mplt
+import pylab as plt
+from pylab import figure, show, legend, xlabel, ylabel
+\end{verbatim}
+El proceso que realizamos para la limpieza de datos fue el mismo a la actividad anterior, con ello logramos obtener la siguiente tabla de los datos.\\
+\begin{center}
+\includegraphics[scale=0.60]{Tabla_de_datos.png}
+\end{center}
+\newpage
+\subsection{\huge Gráficando con Matplot}
+Al iniciar con la graficación con Matplot, se definió con anterioridad el módulo a utilizar en jupyter notebook.
+\begin{verbatim}
+import matplotlib.pyplot as mplt
+\end{verbatim}
+La primera gráfica a realizar, es la comparación de la presión conforma va aumentando la altura. Para poder realizar correctamente la gráfica, ocupamos definir a los ejes, esto se realizó con los siguientes comandos:
+\begin{verbatim}
+x=df[u'Altitud']
+y=df[u'Presión']
+\end{verbatim}
+Ya definidas los ejes que se mostrarán en la gráfica, procedemos a realizar la graficación y establecer los nombres que representan cada eje y el titulo deseado para la gráfica:
+\begin{verbatim}
+mplt.plot(x,y)
+mplt.grid(True)
+plt.xlabel('Altura (m)')
+plt.ylabel('Presión (hPa)')
+plt.title('Presión en relación a la altura')
+\end{verbatim}
+Y esta gráfica fue el resultado.\\
+\begin{center}
+\includegraphics[scale=0.75]{Presion_funcion_altura.png}
+\end{center}
+Como logramos observar en la gráfica mostrada, la presión disminuye de manera exponencial conforme se aumenta la altura.\\
+
+La siguiente gráfica a realizar, será la que consiste en la relación de la temperatura con la altura. Para graficarla, seguiremos los mismos pasos que se realizaron para la gráfica anterior pero con unos cambios en cuanto a titulos, por ejemplo: cambiamos "Presión" por "Temperatura" al definir los ejes. Todo se muestra en los siguientes comandos utilizados:
+\begin{verbatim}
+x=df[u'Altitud']
+y=df[u'Temperatura']
+
+mplt.plot(x,y)
+mplt.grid(True)
+
+plt.xlabel('Altitud (m)')
+plt.ylabel('Temperatura (C)')
+
+plt.title('Temperatura en relación a la altura')
+\end{verbatim}
+Con esos comandos creamos esta gráfica:
+\begin{center}
+\includegraphics[scale=0.80]{Temperatura_funcion_altura.png}
+\end{center}
+Esta gráfica muestra un caso similar al de la presión, conforme la altura va aumentando, la temperatura del ambiente va disminuyendo. En cierto punto esta comienza a elevarse de nuevo un poco y procede a disminuir de nuevo.\\
+
+Ahora, procederemos a realizar una gráfica la temperatura de rocío conforme la temperatura va en aumento. El proceso es el mismo, pero se realizan cambios a los comandos para adaptarlos para los datos del rocío:
+\begin{verbatim}
+x=df[u'Altitud']
+y=df[u'DWPT']
+
+mplt.plot(x,y)
+mplt.grid(True)
+
+plt.xlabel('Altitud')
+plt.ylabel('DWPT (C)')
+
+plt.title('Temperatura de rocío en relación a la altura')
+\end{verbatim}
+Y nos muestra la siguiente gráfica
+\begin{center}
+\includegraphics[scale=0.75]{Rocio_funcion_altura.png}
+\end{center}
+Ahora, para realizar una prueba, buscaremos juntar dos gráficas en una sola con tal de hacer una comparación entre las temperaturas de ambiente y la temperatura del ambiente. Para ello se utilizaron 2 series de comandos, que nada más son las dos series de comandos que utilizamos anteriormente con las graficas pasadas pero corriendolas juntas para graficarlas unidas. Se utilizaron los siguientes comandos:
+\begin{verbatim}
+x=df[u'Altitud']
+y=df[u'Temperatura']
+
+mplt.plot(x,y)
+mplt.grid(True)
+\end{verbatim}
+\begin{verbatim}
+x=df[u'Altitud']
+y=df[u'DWPT']
+
+mplt.plot(x,y)
+mplt.grid(True)
+
+plt.xlabel('Altitud')
+
+plt.title('Temperatura y temperatura de rocío')
+\end{verbatim}
+\begin{center}
+\includegraphics[scale=0.75]{Temperatura_rocio__funcion_altura.png}
+\end{center}
+\newpage
+\subsection{\huge Gráficando con Tephi}
+Después de realizar todas esas gráficas individuales con matplot lib, ahora realizaremos una gráfica con tephi. Los llamados tephigramas.\\
+Un tephigrama es un diagrama termodinámico, una herramienta de meteorologos para analizar datos de sondeos atmosféricos realizados en el proceso de preparación de las predicciones del tiempo. Hoy nosotros realizaremos el tephigrama del sondeo realizado en la estación en JuanCarrasco para el día 16 de febrero del 2016. Compararemos nuestro tephigrama resultante con el proveído por la plataforma de la Universidad de Wyoming.\\
+
+Para obtener un tephigrama por nuestra parte, ocupamos bajarlo e instalarlo, para ello entramos al github de tephi: 
+\begin{verbatim}
+https://github.com/SciTools/tephi.
+\end{verbatim}
+Realizamos una copia de esto a nuestra biblioteca de github. Ahora, dentro de la carpeta donde estaremos trabajando, abrimos una terminal y utilizamos el siguiente comando:
+\begin{verbatim}
+git clone https://github.com/Jorgingo/tephi.git
+\end{verbatim}
+Esto creará una copia de todo el folder que contiene a tephi en la carpeta donde estaremos trabajando. Para instalarlo, utilizaremos el siguiente comando en la terminal:
+\begin{verbatim}
+pip install --user /home/elmadafaka/Física_computacional/Actividad_4/tephi
+\end{verbatim}
+Esto debería realizar una instalación local de tephi en nuestro usuario para poder utilizarlo en jupyter notebook.
+\newpage
+A continuación, debemos preparar dos archivos de dos columnas cada uno. Uno con los datos de presión y temperatura, otra con los datos de presión y temperatura de rocío (Dewpoint=DWPT).
+Ambos creados en archivos tipo csv modificados con emacs de los datos obtenidos de la plataforma de la Universidad de Wyoming. Como ejemplo, obtuvimos esto:\\
+\begin{center}https://preview.overleaf.com/public/nchndwxszpsq/images/c6bba15bf5529567ab9736683ea5de2e5b3ca0bd.jpeg
+\includegraphics[scale=0.75]{tabla_temp.png}
+\includegraphics[scale=0.75]{tabla_DWPT.png}
+\end{center}
+Ahora, procedemos a utilizar los siguientes comandos para poder gráficar un tephigrama:
+\begin{verbatim}
+import os.path
+import tephi as tephi
+
+dew_point=pd.read_csv('DWPT.csv', names=['Presión','DWPT'])
+temp=pd.read_csv('Temperatura.csv', names=['Presión','Temperatura'])
+tpg=tephi.Tephigram()
+tpg.plot(dew_point)
+tpg.plot(temp)
+plt.show()
+\end{verbatim}
+\newpage
+La gráfica que nos mostró es la siguiente:\\
+\begin{center}
+\includegraphics[scale=0.55]{tephigrama.png}
+\end{center}
+Ahora, mostraremos el tephigrama proveído por la plataforma de la Universidad de Wyoming:\\
+\begin{center}
+\includegraphics[scale=0.55]{skewt.png}
+\end{center}
+Podemos observar la gran similitud, la diferencia reside que nuestra gráfica cubre una mayor cantidad de datos, por eso se encuentra alargada, pero en escencia es la misma.
+\newpage
+\section{\huge Conclusión}
+Al finalizar la actividad, aprendimos a gráficar con ambos métodos, matplot y tephi. Aunque la instalación y utilización de tephi resultó bastante complicada debido a que saltaba un error tras otro sin lograr encontrar una manera correcta de realizar su instalación y utilización de comandos, además de la lectura de archivos y como estos deben ser preparados de una manera especifica para que este pueda leerlos bien y realizar una gráfica correcta. Con todo eso de fuera, logramos obtener le tephigrama que se extiende aún más que la proveída por la plataforma de la Universidad de Wyoming.
+
+
+
+\end{document}

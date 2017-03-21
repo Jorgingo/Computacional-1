@@ -1,0 +1,151 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{mathtools}
+\usepackage{amssymb} 
+\usepackage{enumitem}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[none]{hyphenat}
+\usepackage{setspace}
+\title{Mareas y corrientes}	
+
+
+\makeatletter  
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date										
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{} %%
+\lhead{\thetitle}
+\cfoot{\thepage}
+\usepackage{setspace}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\centering
+  \vspace*{0.5 cm}
+   \includegraphics[scale = 0.4]{logo.png}\\[0.5 cm]% University Logo
+    \textsc{\LARGE Universidad de Sonora}\\[1.0 cm]	% University Name
+	\textsc{\LARGE División de Ciencias Exactas y Naturales}\\[0.5 cm]	
+    
+	\textsc{\LARGE Física computacional}\\
+    \textsc{\Large Carlos Lizarraga Celaya}\\ [0.5 cm]
+    \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[0.5 cm]
+    \textsc{\Large Campos Quiñonez Jorge Andres} \\[0.25 cm]
+   \textsc {\large 14 de Marzo del 2017} 	
+
+	
+ 
+	\vfill
+	
+\end{titlepage}
+\pagebreak
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\tableofcontents
+\pagebreak
+\onehalfspacing
+
+\section*{\LARGE Introducción}
+\large Para dar inicio al considerado segundo parcial, comenzaremos hablando acerca de las mareas, el principal tema a tratar en este parcial. Para hablar sobre las mareas, nos basaremos en la estructura que se encuentra en la página de wikipedia acerca de las mareas. Por eso mismo, comenzaremos por realizar una definición de las mareas, una pequeña explicación sobre ellas. Seguiremos con sus características, el como se comportan en distintos tiempos durante el día. Después hablaremos acerca de lo que las constituyen, las influencias que reciben para realizar cambios en las mareas. Proseguiremos con la física en las mareas, las fuerzas que la generan, las ecuaciones utilizadas para moderlarlas, la amplitud máxima de las mareas, los tiempos de estas amplitudes. Para finalizar, hablaremos de las observaciones y predicciones que se hace acerca de ellas, donde y como se realizaron las primeras observaciones, los tiempos que se miden mediante la observación y un análisis acerca de las mareas.
+\pagebreak
+\section{\LARGE Desarrollo}
+\subsection{\Large Definición de marea}
+\large Las mareas es el cambio y el movimiento que sufre el mar, el subir y bajar del nivel del mar producido por efectos combinados de las fuerzas gravitacionales entre la luna y la tierra y la rotación que posee la tierra. Un ejemplo de este efecto, es que uno puede observar un bote flotar cerca de la orilla del mar, pero después de unas horas, este se encuentra estancado en la area aún cuando no se movió de su posición, esto se observa como que el nivel del mar bajó.\\
+
+Los tiempos en que la amplitud de las mareas (baja o alta) en determinada localización son influenciadas por el alineamiento del sol y la luna con respecto a la tierra (ver Figura 1). Además de los patrones de las mareas en el océano profundo, la forma que posea la costa, si estás se encuentran a un nivel alto o al ras del nivel del mar.\\
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.30]{Mareas_1.png}
+\caption{Figura 1}
+\end{figure}
+
+
+Es común que cuando un lugar en la tierra posea un nivel alto de la marea, en otro lugar de la tierra se tenga el nivel más bajo de la marea (Figura 1). Las mareas suelen cambiar en periodos de tiempos desde horas hasta años, esto depende de los factores que se encuentren influenciado en esa área.
+\pagebreak
+\section{\Large Características}
+Las características que podemos definir acerca de las mareas es sobre los cambios que esta sufre a través de las siguientes etapas:
+\begin{itemize}
+\item El nivel del mar se va alzando cubre la zona intermareal. A este tiempo se le llama \textit{\textbf{pleamar.}}
+\item La marea llega su altitud máxima posible, la llamada \textit{\textbf{marea alta.}}
+\item El nivel nivel de la marea comienza a bajar, descubriendo la zona intermareal. A este tiempo se le llama \textit{\textbf{reflujo.}} 
+\item El nivel del mar cesa de bajar, alcanzando la \textit{\textbf{marea baja.}}
+\end{itemize}
+Durante un día, hay tres distintas maneras en las que los ciclos de las mareas se pueden dar, diurnos, semi-diurno y mixto. (Figura 2)\\
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.30]{Ciclos.png}
+\caption{Figura 2}
+\end{figure}
+
+Las mareas comunmente son \textit{\textbf{semi-diurnas}}, esto quiere decir que durante el día posee dos mareas altas y dos mareas altas (dos ciclos de marea), en los cuales no es necesario que ambos extremos bajos o altos posean la misma amplitud. En el \textit{\textbf{diurno}}, únicamente se da un ciclo de mareas por día. Durante el \textit{\textbf{mixto}}, los ciclos de mareas tienen a ser mayores a dos por día y existe una correlación entre la amplitud de las mareas bajas o altas pasadas durante el mismo día.
+\pagebreak
+\section{\Large Constituyentes de las mareas}
+Los constituyentes de las mareas son el resultado de multiples influencias que impactan a los cambios de marea sobre ciertos periodos de tiempo. Unos de los constituyentes primarios son la rotación de la tierra, la posición de la Luna y el Sol relativos a la tierra, la altitud de la Luna sobre el ecuador de la tierra. Las variaciones de estas influencias que poseen periodos que duran menos de medio día son llamados \textit{\textbf{constituyentes armónicos}}. Por el contrario, las variaciones que tardan días, meses o incluso años son llamados \textit{\textbf{constituyentes de periodo largo}}.\\
+Ahora observaremos varios constituyentes de manera individual para darles una explicación.
+
+\subsection{\Large Constituyente principal lunar semi-diurno}
+En la gran mayoría de los lugares, el más grande constituyente es el \textit{\textbf{lunar semidiurno principal}}. Este constituyente representa la rotación de la tierra con respecto a la luna. El periodo de esta rotación es alrededor de 12 horas y 25.2 minutos, o sea, medio día lunar. Este es el tiempo promedio que separa un zenith lunar del otro.\\
+
+Como el campo gravitacional creado por la luna se debilita conforme se aumenta la distancia con la luna, este ejerce una fuerza ligeramente mayor en el lado donde la tierra se encuentra viendo a la luna. Conforme la tierra rota y la luna se desplaza, la fuerza gravitacional ejercida por la luna cambia, aumentando o disminuyendo la marea en determinadas áreas.\\
+
+\subsection{\Large Temporadas}
+Otro gran factor importante, es el posicionamiento por temporadas de la luna y el sol con respecto a la tierra. Para la Luna, el \textit{\textbf{perigeo}} es el punto en el que esta se encuentra más cercana a la tierra y por eso, la fuerza gravitacional es mayor provocando mareas más altas. Por el otro lado, el \textit{\textbf{apogeo}} es cuando esta se encuentra más lejana a la tierra, disminuyendo su fuerza gravitacional y con ella, las mareas. (Figura 3)\\
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=1.5]{apogeo.png}
+\caption{Figura 3: Punto 1 es el apogeo, el punto 2 es el perigeo y el punto 3 es la tierra.}
+\end{figure}
+
+ De manera análoga, tenemos a la tierra orbitando alrededor del Sol. En este caso, se utilizan los términos de \textit{\textbf{afelio}} y \textit{\textbf{perihelio}}. El \textit{\textbf{perihelio}} es el punto más alejado de la tierra con respecto al Sol. Por el otro lado, el \textit{\textbf{afelio}} es el opuesto al perihelio, es el punto más cercano al Sol. (Figura 4)\\
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=.35]{afelio.png}
+\caption{Figura 4.}
+\end{figure} 
+ 
+Al igual que la Luna, dependiendo de su distancia, la fuerza gravitacional que ejerce sobre la tierra y sus mareas. Si las posiciones de tanto la Luna como el Sol (con respecto a la Tierra) llegan a alinearse, será cuando la fuerza gravitacional ejercida sobre la Tierra llegará a su punto máximo. De la misma manera, es cuando la marea llega a su punto de amplitud máxima cuando esta se ve influenciada por las fuerzas gravitacionales.
+
+\section{La física en las mareas}
+\subsection{Historia del estudio de las mareas}
+La investigación en la física de las mareas resultó de bastante importancia en el desarrollo del \textit{\textbf{heliocentrismo}} y las \textit{\textbf{mecánicas celestes}}, con las existencia de dos ciclos de mareas al día siento explicadas por la gravedad de la Luna ejercida sobre la Tierra. Tiempo después, también se le asociaría la fuerza gravitacional del Sol sobre la tierrra en conjunto con el de la Luna. Durante los años, se continuaba por teorizar e incluso demostrar que la existencia de las mareas se debía a la interacción de la Luna, el Sol y la Tierra mediante de las fuerzas de atracción gravitacionales.\\
+
+Pierre-Simon Laplace formuló un sistema de ecuaciones diferenciales parciales, relacionando el flujo horizontal del océano con su altura en la superficie, está fue la primera teoría dinámica para las mareas. Estas ecuaciones de las mareas de Laplace se encuentran en uso aún en estos tiempos.\\
+
+\subsection{Fuerzas}
+Las fuerzas ejercidas sobres las mareas, producidas por un objeto masivo (la Luna) en una pequeña partícula sobre o dentro de un cuerpo inmenso (la Tierra) es el vector resultante de la diferencia entre la fuerza gravitacional ejercida por el objeto masivo en la partícula y la fuerza gravitacional ejercida sobre la partícula en la Tierra. La superficie oceánica se aproxima en gran medida a una superficie equipotencial comunmente llamada \textit{\textbf{geoide}}. Como la fuerza gravitacional posee un potencial igual para esta parte de la tierra, no existen fuerzas tangenciales en esta misma superficie. Pero ahora, considerando el efecto de objetos externos masivos como lo es la Luna y el SOl, estos cuerpos tienen grandes fuerzas gravitacionales que alteran la forma de una línea equipotencial en la superficie de la tierra. Cuando el equipotencial de las mareas cambian, esta ya no se encuentra alineada, por eso se dan cambios a la marea misma, el alzamiento o el descender de la marea que tanto se ha mencionado.\\
+
+\subsection{Ecuaciones de marea de Laplace}
+La longitud de profundidad de los océanos son mucho menores que la extensión horizontal de los mismo, de esta manera, las fuerzas de las mareas pueden ser modeladas utilizando las ecuaciones de mareas de Laplace las cuales incorporan las siguientes características:
+\begin{enumerate}
+\item La velocidad vertical es prácticamente despreciable.
+\item La fuerza se da de manera horizontal.
+\item El efecto coriolis hace su aparición como una fuerza ficticia, actuando de manera paralela a la dirección del flujo y proporcional a la velocidad.
+\item La taza de cambio de la altura de la superficie es proporcional al negativo de la divergencia de la velocidad multiplicado por la profundidad.
+\end{enumerate}
+
+\subsection{Amplitud y tiempo de ciclos}
+La amplitud teórica de las mareas oceánicas causadas por la luna, son alrededor de 54cm en su punto más alto, el cual corresponde a la amplitud que habría alcanzado si el océano tuviera una profundidad uniforme y la tierra rotara al mismo paso en el que la luna orbita la tierra, El Sol, de manera similar, causa mareas de la cual su amplitud teórica es de 25cm con un tiempo de ciclo de 12 horas. Cuando la luna y el sol se encuentran alineados, la amplitud teórica que una marea puede alcanzar es de 79cm..
+
+
+
+\end{document}

@@ -1,0 +1,217 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{mathtools}
+\usepackage{amssymb} 
+\usepackage{enumitem}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[none]{hyphenat}
+\usepackage{setspace}
+\title{Análisis Armónico de las Mareas}	
+
+
+\makeatletter  
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date										
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{} %%
+\lhead{\thetitle}
+\cfoot{\thepage}
+\usepackage{setspace}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\centering
+  \vspace*{0.5 cm}
+   \includegraphics[scale = 0.4]{logo.png}\\[0.5 cm]% University Logo
+    \textsc{\LARGE Universidad de Sonora}\\[1.0 cm]	% University Name
+	\textsc{\LARGE División de Ciencias Exactas y Naturales}\\[0.5 cm]	
+    
+	\textsc{\LARGE Física computacional}\\
+    \textsc{\Large Carlos Lizarraga Celaya}\\ [0.5 cm]
+    \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[0.5 cm]
+    \textsc{\Large Campos Quiñonez Jorge Andres} \\[0.25 cm]
+   \textsc {\large 22 de Marzo del 2017} 	
+
+	
+ 
+	\vfill
+	
+\end{titlepage}
+\pagebreak
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+\tableofcontents
+\pagebreak
+\onehalfspacing
+
+\section*{\LARGE Introducción}
+\large En esta semana, continuaremos con la temática de las mareas (al parecer ese será el caso de toda esta sección de actividades). Como ahora hemos obtenido datos acerca de las mareas en determinadas regiones del mundo, en nuestro caso: Bar Harbor, Mein, Estados Unidos y Puerto Morelos, Quintana Roo, México de las bases de datos de la "National Oceanic and Atmospheric Administration" (NOAA) y de el "Centro de Investigación Científica y de Educación Superior de Ensenada" (CICESE). Con estos datos, aplicaremos un análisis de Furier para realizar un análisis armónico del movimiento de las mareas, para descomponer su movimiento en componentres principales. Con la ayuda de Python, gráficaremos los datos que deseamos obtener para poder utilizar la aplicación interactiva en Java del sitio PhET. El cual es utilizado para la modelación de ondas con el uso de las series de Seno y Coseno de Fourier.
+\pagebreak
+\section{\Large Obtención de datos}
+\large Gracias a la actividad anterior, ya poseemos los datos que utilizaremos, en este caso son los archivos:
+\begin{itemize}
+\item $Puerto_Morelos.csv$
+\item $Bar_Harbor.csv$
+\end{itemize}
+Donde Puerto Morelos posee datos de todo el año 2016, obtenidos por el CICESE y Bar Harbor únicamente posee datos del mes de enero del 2016 (debido a limitaciones en la plataforma), estos obtenidos del NOAA.\\
+
+\section{\Large Limpieza de datos}
+Ahora, en Jupyter notebook realizaremos una limpieza de estos datos ya que nos interesa obtener los datos para los cuales el nivel de la marea es "0". Esto se hará para ambos sitios de donde obtuvimos los datos: Bar Harbor y Puerto Morelos.
+
+\subsection{Puerto Morelos}
+Para comenzar a realizar la limpieza de datos, debemos leer el archivo descargado
+\begin{verbatim}
+df=pd.read_csv("Puerto_Morelos.csv", header=int(0))
+df.head()
+\end{verbatim}
+y nos mostró la siguiente tabla:
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.60]{Tabla_morelos1.png}
+\caption{Lista de los primeros 4 datos.}
+\end{figure}
+Ahora, realizaremos la limpieza comenzando por seleccionar todas las líneas de datos en las cuales el nivel de marea haya sido alrededor de 0 metros de altura, justo después lo definimos como un nuevo \textit{DataFrame} de la siguiente manera:
+\begin{verbatim}
+df1= df.loc[abs(df['altura(mm)']) < 0.09]
+\end{verbatim}
+\newpage
+y muestra la siguiente tabla de datos:
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.60]{Tabla_morelos2.png}
+\caption{Lista de datos con altura igual a 0.}
+\end{figure}
+Ahora, tenemos un nuevo DataFrame con la lista de datos donde el nivel de marea se encuentra alrededor de 0.
+
+\subsection{Bar Harbor}
+Ahora procederemos a realizar los mismos pasos para realizar la limpieza de datos de obtenidos por el NOAA del sitio de sondeo, Bar Harbor, Mein. Comenzando por la lectura del archivo:
+\begin{verbatim}
+\begin{verbatim}
+df=pd.read_csv("Bar_Harbor.csv", header=int(0))
+df.head()
+\end{verbatim}
+Este nos presentó con la siguiente tabla:
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.60]{Tabla_Bar.png}
+\caption{Lista de los primeros 4 datos de Bar Harbor.}
+\end{figure}
+De nuevo, se definió un nuevo DataFrame para todas las líneas que poseen un valor en la altura de marea igual a 0.
+\begin{verbatim}
+df1= df.loc[abs(df['Water Level']) < 0.09]
+\end{verbatim}
+\newpage
+y muestra la siguiente tabla de datos:
+\begin{figure}[ht!]
+\centering
+\includegraphics[scale=0.60]{Tabla_Bar2.png}
+\caption{Lista de datos con altura igual a 0.}
+\end{figure}
+
+\section{Las gráficas}
+Ahora que ya hemos observado los tiempos en los que los valores de la altura tienden a 0, ahora realizaremos la transformación de Fourier en ambas series de datos (completos). Para realizar esto, utilizaremos el paquete fftpack de SciPy y la siguiente serie de comandos para realizar las gráficas, estos modos se ven modificados para cada serie de datos de manera individual.\\
+
+\subsection{Bar Harbor}
+Para la serie de datos de Bar Harbor se utilizó el siguiente comando de fftpack
+\begin{verbatim}
+N = 1440
+T = 1.0 / 60
+x = df['Date Time']
+y = df['Water Level']
+yf = fft(y)
+xf = fftfreq(N, T)
+xf = fftshift(xf)
+yplot = fftshift(yf)
+plt.plot(xf, 1.0/N * np.abs(yplot))
+plt.xlim(-1,10)
+plt.xlabel('Frecuencia')
+plt.ylabel('Water Level')
+plt.grid()
+plt.show()
+\end{verbatim}
+y nos nuestra la siguente gráfica:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.60]{Bar_harbor.png}
+\caption{Gráfica de la transformación de Fourier.}
+\end{figure}
+
+\subsection{Puerto Morelos}
+Para la serie de datos de Puerto Morelos se utilizó el siguiente comando de fftpack, se tuvo en consideración que se trató de todos los datos del años.
+\begin{verbatim}
+N = 8784
+T = 1.0 / 364
+x = df['date']
+y = df['altura(mm)']
+yf = fft(y)
+xf = fftfreq(N, T)
+xf = fftshift(xf)
+yplot = fftshift(yf)
+plt.plot(xf, 1.0/N * np.abs(yplot))
+plt.xlim(-1,200)
+plt.xlabel('Frecuencia')
+plt.ylabel('Altura(mm)')
+plt.grid()
+plt.show()
+\end{verbatim}
+\pagebreak
+Y mostró la siguiente gráfica:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.60]{Puerto_morelos.png}
+\caption{Gráfica de la transformación de Fourier.}
+\end{figure}
+
+\section{Identificando los componentes}
+A partir de las gráficas, utilizando los valores de la frecuencia obtenidos donde se dieron picos en las gráficas. En base a la tabla de los componentes de las mareas que se encuentra wikipedia, realizaremos una comparación con nuestros datos de frecuencia utilizando la formula $T=2\pi f$.\\
+
+\subsection{Bar Harbor}
+A partir de la gráfica obtenida con la transformada de Furier, identificamos los siguientes componentes:\\
+\begin{figure}[h]
+\includegraphics[scale=0.6]{Bar_comp.png}
+\end{figure}
+Donde:
+\begin{description}
+\item[$M_2$.-] Principal lunar semidiurnal.
+\item[$L_2$.-] Smaller lunar elliptic semidiurnal.
+\item[$N_2$.-] Larger lunar elliptic semidiurnal.
+\item[$S_2$.-] Principal solar semidiurnal.
+\item[$O_1$.-] Lunar diurnal
+\end{description}
+
+\subsection{Puerto Morelos}
+A partir de la gráfica obtenida con la transformada de Furier, identificamos los siguientes componentes:\\
+\begin{figure}[h]
+\includegraphics[scale=0.6]{Puerto_comp.png}
+\end{figure}
+Donde:
+\begin{description}
+\item[$M_2$.-] Principal lunar semidiurnal.
+\item[$T_2$.-] Larger solar elliptic.
+\item[$MU_2$.-] Variational.
+\item[$2MS_2$.-] Shallow water semidiurnal.
+\item[$O_1$.-] Lunar diurnal.
+\item[$K_1$.-] Lunisolar semidiurnal.
+\end{description}
+\end{document}

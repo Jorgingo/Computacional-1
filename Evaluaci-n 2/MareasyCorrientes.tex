@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{mathtools}
+\usepackage{amssymb} 
+\usepackage{enumitem}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[none]{hyphenat}
+\usepackage{setspace}
+\title{Evaluación 2}	
+
+
+\makeatletter  
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date										
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{} %%
+\lhead{\thetitle}
+\cfoot{\thepage}
+\usepackage{setspace}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\centering
+  \vspace*{0.5 cm}
+   \includegraphics[scale = 0.4]{logo.png}\\[0.5 cm]% University Logo
+    \textsc{\LARGE Universidad de Sonora}\\[1.0 cm]	% University Name
+	\textsc{\LARGE División de Ciencias Exactas y Naturales}\\[0.5 cm]	
+    
+	\textsc{\LARGE Física computacional}\\
+    \textsc{\Large Carlos Lizarraga Celaya}\\ [0.5 cm]
+    \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[0.5 cm]
+    \textsc{\Large Campos Quiñonez Jorge Andres} \\[0.25 cm]
+   \textsc {\large 26 de Abril del 2017} 	
+
+	
+ 
+	\vfill
+	
+\end{titlepage}
+\pagebreak
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+
+\pagebreak
+\onehalfspacing
+\begin{enumerate}
+\item \textbf{De los datos proporcionados, utiliza una transformada discreta de Fourier, para encontrar la frecuencia del ciclo principal. Muestra una gráfica con los principales modos encontrados.}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1]{Manchas_solares.png}
+\end{figure}
+
+\item \textbf{¿Encuentras un solo ciclo principal o un conjunto de ciclos con frecuencia cercana? ¿Cuál sería el promedio del conjunto de frecuencias?}\\
+Encontramos 4 ciclos que se encuentran juntos, estos ciclos tienen un promedio de número de manchas más alto de lo normal. Estos 4 ciclos poseen una frecuencia cercana, de alrededor de 11 años. Para el promedio de tiempo en años de los ciclos tenemos que es de 10.85605 años. \\
+
+\item \textbf{¿Qué otros ciclos relevantes encuentras? Proporciona una tabla con las amplitudes de los ciclos.}\\
+\begin{table}[h]
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+Ciclo & Periodo (Meses) & Periodo (Años) & Frecuencia       & Amplitud      \\ \hline
+23    & 139.6956        & 11.6413        & 0.00715841892312 & 22.6781521056 \\ \hline
+24    & 133.875         & 11.1562        & 0.00746965452848 & 39.9872332086 \\ \hline
+25    & 128.52          & 10.71          & 0.00778089013383 & 35.4198320032 \\ \hline
+27    & 119.0           & 9.9167         & 0.00840336134454 & 30.9080378809 \\ \hline
+\end{tabular}
+\end{table}
+
+\item \textbf{Lo que han encontrado hasta ahora son ciertas regularidades, incluso hay pronósticos de un rango para el número de manchas solares. ¿Cómo crees que es posible predecir el número de manchas?}\\
+En lo que han encontrado regularidades, es en el periodo de tiempo que tarde en llegar de un máximo (o un mínimo) a otro, le número de manchas solares tiende a variar también. Cada determinado número de tiempo hay otro gran ciclo n. Durante ese periodo de tiempo, el número de manchas solares comienza a aumentar a un ritmo dado y cuando este llega a su cúspide, el número de manchas solares comienza a descender a ese mismo ritmo como lo hace una onda, permitiendo que los observadores puedas realizar una predicción aproximada acerca del número de manchas que presentará el Sol en determinado tiempo.
+\begin{figure}[h]
+\includegraphics[scale=0.45]{Prediccion.png}
+\end{figure}
+\end{enumerate}
+
+
+\end{document}

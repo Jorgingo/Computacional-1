@@ -1,0 +1,1 @@
+Aquí se presenta el archivo de Jupyter Notebook, junto con el PDF y el .tex correspondientes.

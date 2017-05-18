@@ -1,0 +1,214 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage{natbib}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{mathtools}
+\usepackage{amssymb} 
+\usepackage{enumitem}
+\usepackage{makeidx}
+\usepackage{hyperref}
+\usepackage[none]{hyphenat}
+\usepackage{setspace}
+\title{Atractores Extraños, El Efecto Mariposa}	
+
+
+\makeatletter  
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date										
+\makeatother
+
+\pagestyle{fancy}
+\fancyhf{} %%
+\lhead{\thetitle}
+\cfoot{\thepage}
+\usepackage{setspace}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{titlepage}
+\centering
+  \vspace*{0.5 cm}
+   \includegraphics[scale = 0.4]{logo.png}\\[0.5 cm]% University Logo
+    \textsc{\LARGE Universidad de Sonora}\\[1.0 cm]	% University Name
+	\textsc{\LARGE División de Ciencias Exactas y Naturales}\\[0.5 cm]	
+    
+	\textsc{\LARGE Física computacional}\\
+    \textsc{\Large Carlos Lizarraga Celaya}\\ [0.5 cm]
+    \rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[0.5 cm]
+    \textsc{\Large Campos Quiñonez Jorge Andres} \\[0.25 cm]
+   \textsc {\large 17 de Mayo del 2017} 	
+
+	
+ 
+	\vfill
+	
+\end{titlepage}
+\pagebreak
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
+
+\pagebreak
+\onehalfspacing
+
+\section*{\Large Desarrollo}
+Antes de comenzar a hablar sobre la teoría del caos, primero haremos mención acerca de la "\textit{Ley de causa y efecto: Toda causa tiene su efecto; todo efecto tiene su causa, todo sucede de acuerdo con la ley; la suerte no es más que el nombre que se le da a una ley no conocida}". Por ejemplo, si se le cae una taza al suelo desde la mesa, esta se romperá. El efecto, los trozos que quedan por el suelo tienen su causa en la ley de la atracción de la tierra, si esa caída sucediera en un lugar sin gravedad el vaso no se rompería contra el suelo. Bajo este mismo concepto se rige la teoría del caos, pero tiene varios cambios.\\
+
+La teoría del caos es una rama de las matemáticas, la cual se encuentra enfocada en sistemas dinámicos que son muy sensibles a variaciones en sus condiciones iniciales. Un ejemplo muy común con el cual se relaciona el caos, se trata de "\textit{el efecto mariposa}". El efecto mariposa describe el como pequeños cambios en el estado de un sistema determinista no lineal, puede resultar en grandes diferencias en un estado de tiempo más avanzado. Este efecto ocurre aún cuando estos sistemas son determinados, quiere decir que su comportamiento futuro se encuentra determinado por sus condiciones iniciales sin poseer ningún elemento que sea aleatorio. O sea, su naturaleza determinista no los hace predecibles. Este comportamiento es conocido como "\textit{caos determinista}" o simplemente "\textit{caos}".\\
+
+Para mostrar ejemplos, se realizaron simulaciones de sistemas deterministas en jupyter notebook y se graficaron los llamados "\textit{atractores de Lorenz}".\\
+
+El código utilizado fue el siguiente:\\
+\begin{verbatim}
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+
+def lorenz(x, y, z, s=10, r=28, b=2.667):
+    x_dot = s*(y - x)
+    y_dot = r*x - y - x*z
+    z_dot = x*y - b*z
+    return x_dot, y_dot, z_dot
+
+
+dt = 0.01
+stepCnt = 10000
+
+# Need one more for the initial values
+xs = np.empty((stepCnt + 1,))
+ys = np.empty((stepCnt + 1,))
+zs = np.empty((stepCnt + 1,))
+
+# Setting initial values
+xs[0], ys[0], zs[0] = (0.005, 00.25, 0.1)
+
+# Stepping through "time".
+for i in range(stepCnt):
+    # Derivatives of the X, Y, Z state
+    x_dot, y_dot, z_dot = lorenz(xs[i], ys[i], zs[i])
+    xs[i + 1] = xs[i] + (x_dot * dt)
+    ys[i + 1] = ys[i] + (y_dot * dt)
+    zs[i + 1] = zs[i] + (z_dot * dt)
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+
+ax.plot(xs, ys, zs, lw=0.5)
+ax.set_xlabel("X Axis")
+ax.set_ylabel("Y Axis")
+ax.set_zlabel("Z Axis")
+ax.set_title("Lorenz Attractor")
+
+plt.show()
+\end{verbatim}
+Y a partir de esto obtuvimos la siguiente gráfica:\\
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.70]{Atractor.png}
+\end{figure}\\
+
+El siguiente paso en la actividad, es realizar una animación en 3D de este mismo atractor en un formato mp4, para ello se utilizó el siguiente código:\\
+\begin{verbatim}
+import numpy as np
+from scipy import integrate
+
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import cnames
+from matplotlib import animation
+import ffmpy
+
+N_trajectories = 20
+
+
+def lorentz_deriv(params, t0, sigma=10., beta=8./3, rho=28.0):
+    """Compute the time-derivative of a Lorentz system."""
+    x, y, z = params
+    return [sigma * (y - x), x * (rho - z) - y, x * y - beta * z]
+
+
+# Choose random starting points, uniformly distributed from -15 to 15
+np.random.seed(1)
+x0 = -15 + 30 * np.random.random((N_trajectories, 3))
+
+# Solve for the trajectories
+t = np.linspace(0, 4, 1000)
+x_t = np.asarray([integrate.odeint(lorentz_deriv, x0i, t)
+                  for x0i in x0])
+
+# Set up figure & 3D axis for animation
+fig = plt.figure()
+ax = fig.add_axes([0, 0, 1, 1], projection='3d')
+ax.axis('off')
+
+# choose a different color for each trajectory
+colors = plt.cm.jet(np.linspace(0, 1, N_trajectories))
+
+# set up lines and points
+lines = sum([ax.plot([], [], [], '-', c=c)
+             for c in colors], [])
+pts = sum([ax.plot([], [], [], 'o', c=c)
+           for c in colors], [])
+
+# prepare the axes limits
+ax.set_xlim((-25, 25))
+ax.set_ylim((-35, 35))
+ax.set_zlim((5, 55))
+
+# set point-of-view: specified by (altitude degrees, azimuth degrees)
+ax.view_init(30, 0)
+
+# initialization function: plot the background of each frame
+def init():
+    for line, pt in zip(lines, pts):
+        line.set_data([], [])
+        line.set_3d_properties([])
+
+        pt.set_data([], [])
+        pt.set_3d_properties([])
+    return lines + pts
+
+# animation function.  This will be called sequentially with the frame number
+def animate(i):
+    # we'll step two time-steps per frame.  This leads to nice results.
+    i = (2 * i) % x_t.shape[1]
+
+    for line, pt, xi in zip(lines, pts, x_t):
+        x, y, z = xi[:i].T
+        line.set_data(x, y)
+        line.set_3d_properties(z)
+
+        pt.set_data(x[-1:], y[-1:])
+        pt.set_3d_properties(z[-1:])
+
+    ax.view_init(30, 0.3 * i)
+    fig.canvas.draw()
+    return lines + pts
+
+# instantiate the animator.
+anim = animation.FuncAnimation(fig, animate, init_func=init,
+                               frames=500, interval=30, blit=True)
+
+# Save as mp4. This requires mplayer or ffmpeg to be installed
+anim.save('lorentz_attractor.mp4', fps=15, extra_args=['-vcodec', 'libx264'])
+
+
+plt.show()
+\end{verbatim}
+
+La gráfica animada obtenida se encuentra dentro de la carpeta 'Actividad 8' en github.
+\end{document}
